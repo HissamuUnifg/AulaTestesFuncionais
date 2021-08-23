@@ -15,3 +15,5 @@ Para essa aula será usado um sistema de microblog escrito em Flask (https://git
 - Criar os testes de cadastro de uma nova postagem
 - Criar os testes de Alteração de "descrição" no perfil
 
+# TODO
+Verificar os Ids dos campos necessários para os testes da atividade
