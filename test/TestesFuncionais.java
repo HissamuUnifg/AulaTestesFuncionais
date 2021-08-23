@@ -13,43 +13,47 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TestesFuncionais {   
-    private WebDriver browser;
+    
+    private LoginPage loginPage;
     
     @Before
     public void beforeEach(){
-        System.setProperty("webdriver.chrome.driver", 
-                "deps/drivers/chromedriver_linux64/chromedriver");
-        
-        this.browser = new ChromeDriver();
+        this.loginPage = new LoginPage();
     }
     
     @After
     public void afterEach(){
-        this.browser.quit();
+        this.loginPage.fecharNavegador();
     }
    
     @Test
     public void loginComDadosValidos() {
+        this.loginPage.acessarLogin();        
+        this.loginPage.preencherLoginEnviar("Hissa", "senha123");
         
-        browser.navigate().to("http://ec2-54-89-211-20.compute-1.amazonaws.com/auth/login");
+        Assert.assertTrue(this.loginPage.getCurrentUrl().
+                equals("http://ec2-54-89-211-20.compute-1.amazonaws.com/index"));
         
-        browser.findElement(By.id("username")).sendKeys("Hissa");
-        browser.findElement(By.id("password")).sendKeys("senha123");  
-        browser.findElement(By.id("submit")).submit();
-        
-        Assert.assertEquals("Hi, Hissa!", browser.findElement(By.tagName("h1")).getText());        
+        Assert.assertEquals("Hi, Hissa!", this.loginPage.getMensagemBoasVindas());        
     }
     
     @Test
     public void loginComDadosInvalidos() {        
-        browser.navigate().to("http://ec2-54-89-211-20.compute-1.amazonaws.com/auth/login");
+        this.loginPage.acessarLogin();        
+        this.loginPage.preencherLoginEnviar("Hissa", "senha321");
         
-        browser.findElement(By.id("username")).sendKeys("Hissa");
-        browser.findElement(By.id("password")).sendKeys("senha-qualquer");  
-        browser.findElement(By.id("submit")).submit();
-        
-        Assert.assertTrue(browser.getCurrentUrl().
+        Assert.assertTrue(this.loginPage.getCurrentUrl().
                 equals("http://ec2-54-89-211-20.compute-1.amazonaws.com/auth/login"));
-        Assert.assertEquals("Invalid username or password", browser.findElement(By.id("message")).getText());        
+        
+        Assert.assertEquals("Invalid username or password", this.loginPage.getMensagemAlerta());
+    }
+    
+    @Test
+    public void navegarParaPaginaRestritaSemLogin() {        
+        this.loginPage.acessarPaginaPrivada();   
+                       
+        Assert.assertTrue(this.loginPage.getCurrentUrl().
+                equals("http://ec2-54-89-211-20.compute-1.amazonaws.com/auth/login?next=%2Fuser%2FHissa"));
+          
     }
 }
