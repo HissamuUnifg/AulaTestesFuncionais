@@ -11,7 +11,7 @@ Para essa aula será usado um sistema de microblog escrito em Flask (https://git
 
 # ATIVIDADE
 
-Cirar os testes de Logout
-Criar os testes de cadastro de uma nova postagem
-Criar os testes de Alteração de "descrição" no perfil
+- Criar os testes de Logout
+- Criar os testes de cadastro de uma nova postagem
+- Criar os testes de Alteração de "descrição" no perfil
 
